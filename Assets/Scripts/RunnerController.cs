@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(UnityEngine.AI.NavMeshAgent))]
 [RequireComponent(typeof(ThirdPersonCharacter))]
 public class RunnerController : MonoBehaviour
 {
-    public NavMeshAgent agent { get; private set; } // the navmesh agent required for the path finding
+    public UnityEngine.AI.NavMeshAgent agent { get; private set; } // the navmesh agent required for the path finding
     public ThirdPersonCharacter character { get; private set; } // the character we are controlling
     public PathPoint currentPathPoint; // target to aim for
     public int nextChosenPath = -1;
@@ -20,7 +20,7 @@ public class RunnerController : MonoBehaviour
     private void Start()
     {
         // get the components on the object we need ( should not be null due to require component so no need to check )
-        agent = GetComponentInChildren<NavMeshAgent>();
+        agent = GetComponentInChildren<UnityEngine.AI.NavMeshAgent>();
         character = GetComponent<ThirdPersonCharacter>();
 
         gc = GameObject.Find("Game Controller").GetComponent<GameController>();
@@ -88,7 +88,7 @@ public class RunnerController : MonoBehaviour
         {
             //Instantiate a ragdoll and align it's transforms
             Transform curRagdoll = ((GameObject)Instantiate(ragdoll, transform.position, transform.rotation)).transform;
-            KinetifyChildren(transform.FindChild("EthanSkeleton"), curRagdoll.FindChild("EthanSkeleton"), agent.velocity * 0.75f);
+            KinetifyChildren(transform.Find("EthanSkeleton"), curRagdoll.Find("EthanSkeleton"), agent.velocity * 0.75f);
             badEffect.transform.SetParent(curRagdoll.transform);
         }
     }
@@ -104,7 +104,7 @@ public class RunnerController : MonoBehaviour
         }
         foreach (Transform sourceChild in source)
         {
-            KinetifyChildren(sourceChild, destination.FindChild(sourceChild.name), velocity);
+            KinetifyChildren(sourceChild, destination.Find(sourceChild.name), velocity);
         }
     }
 
